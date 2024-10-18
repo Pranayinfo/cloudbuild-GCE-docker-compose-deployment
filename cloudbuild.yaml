@@ -1,113 +1,113 @@
 steps:
   # Step 1: Retrieve secrets from Secret Manager and write to a .env file for each service
 
-  # For excelr_admin_webapp (frontend)
+  # For pranay_admin_webapp (frontend)
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args: 
       - -c
       - |
-        echo "Retrieving secrets for excelr_admin_webapp..."
-        gcloud secrets versions access latest --secret=${_APP_NAME}-admin-webapp --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./excelr-frontend/excelr_admin_webapp/.env
+        echo "Retrieving secrets for pranay_admin_webapp..."
+        gcloud secrets versions access latest --secret=${_APP_NAME}-admin-webapp --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./pranay-frontend/pranay_admin_webapp/.env
 
-  # For excelr_student_webapp (frontend)
+  # For pranay_student_webapp (frontend)
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args: 
       - -c
       - |
-        echo "Retrieving secrets for excelr_student_webapp..."
-        gcloud secrets versions access latest --secret=${_APP_NAME}-student-webapp --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./excelr-frontend/excelr_student_webapp/.env
+        echo "Retrieving secrets for pranay_student_webapp..."
+        gcloud secrets versions access latest --secret=${_APP_NAME}-student-webapp --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./pranay-frontend/pranay_student_webapp/.env
 
-  # For excelr_trainer_webapp (frontend)
+  # For pranay_trainer_webapp (frontend)
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args: 
       - -c
       - |
-        echo "Retrieving secrets for excelr_trainer_webapp..."
-        gcloud secrets versions access latest --secret=${_APP_NAME}-trainer-webapp --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./excelr-frontend/excelr_trainer_webapp/.env
+        echo "Retrieving secrets for pranay_trainer_webapp..."
+        gcloud secrets versions access latest --secret=${_APP_NAME}-trainer-webapp --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./pranay-frontend/pranay_trainer_webapp/.env
 
-  # For excelr-backend-admin (backend)
+  # For pranay-backend-admin (backend)
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args: 
       - -c
       - |
-        echo "Retrieving secrets for excelr_backend_admin..."
-        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-admin --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./excelr-backend/packages/admin/.env
+        echo "Retrieving secrets for pranay_backend_admin..."
+        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-admin --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./pranay-backend/packages/admin/.env
 
-  # For excelr-backend-auth (backend)
+  # For pranay-backend-auth (backend)
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args: 
       - -c
       - |
-        echo "Retrieving secrets for excelr_backend_auth..."
-        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-auth --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./excelr-backend/packages/auth/.env
+        echo "Retrieving secrets for pranay_backend_auth..."
+        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-auth --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./pranay-backend/packages/auth/.env
 
-  # For excelr-backend-trainer (backend)
+  # For pranay-backend-trainer (backend)
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args: 
       - -c
       - |
-        echo "Retrieving secrets for excelr_backend_trainer..."
-        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-trainer --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./excelr-backend/packages/trainer/.env
+        echo "Retrieving secrets for pranay_backend_trainer..."
+        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-trainer --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./pranay-backend/packages/trainer/.env
 
-  # For excelr-backend-users (backend)
+  # For pranay-backend-users (backend)
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
     args: 
       - -c
       - |
-        echo "Retrieving secrets for excelr_backend_users..."
-        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-users --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./excelr-backend/packages/users/.env
+        echo "Retrieving secrets for pranay_backend_users..."
+        gcloud secrets versions access latest --secret=${_APP_NAME}-backend-users --format='get(payload.data)' | tr '_-' '/+' | base64 -d > ./pranay-backend/packages/users/.env
 
   # Step 2: Build Docker images for frontend services (admin, student, trainer)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/excelr-admin:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './excelr-frontend/excelr_admin_webapp']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pranay-admin:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './pranay-frontend/pranay_admin_webapp']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/excelr-student:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './excelr-frontend/excelr_student_webapp']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pranay-student:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './pranay-frontend/pranay_student_webapp']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/excelr-trainer:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './excelr-frontend/excelr_trainer_webapp']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pranay-trainer:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './pranay-frontend/pranay_trainer_webapp']
 
   # Step 3: Build Docker images for backend services (admin, auth, trainer, users)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/excelr-backend-admin:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './excelr-backend/packages/admin']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pranay-backend-admin:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './pranay-backend/packages/admin']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/excelr-backend-auth:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './excelr-backend/packages/auth']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pranay-backend-auth:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './pranay-backend/packages/auth']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/excelr-backend-trainer:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './excelr-backend/packages/trainer']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pranay-backend-trainer:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './pranay-backend/packages/trainer']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/excelr-backend-users:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './excelr-backend/packages/users']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pranay-backend-users:$BRANCH_NAME', '--build-arg', 'ENV=${_ENV}', './pranay-backend/packages/users']
 
   # Step 4: Push Docker images to Artifactory
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/excelr-admin:$BRANCH_NAME']
+    args: ['push', 'gcr.io/$PROJECT_ID/pranay-admin:$BRANCH_NAME']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/excelr-student:$BRANCH_NAME']
+    args: ['push', 'gcr.io/$PROJECT_ID/pranay-student:$BRANCH_NAME']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/excelr-trainer:$BRANCH_NAME']
+    args: ['push', 'gcr.io/$PROJECT_ID/pranay-trainer:$BRANCH_NAME']
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/excelr-backend-admin:$BRANCH_NAME']
+    args: ['push', 'gcr.io/$PROJECT_ID/pranay-backend-admin:$BRANCH_NAME']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/excelr-backend-auth:$BRANCH_NAME']
+    args: ['push', 'gcr.io/$PROJECT_ID/pranay-backend-auth:$BRANCH_NAME']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/excelr-backend-trainer:$BRANCH_NAME']
+    args: ['push', 'gcr.io/$PROJECT_ID/pranay-backend-trainer:$BRANCH_NAME']
   
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/excelr-backend-users:$BRANCH_NAME']
+    args: ['push', 'gcr.io/$PROJECT_ID/pranay-backend-users:$BRANCH_NAME']
 
  # SSH into the VM to ensure the target directory exists and has the correct permissions
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -115,10 +115,10 @@ steps:
     args:
       - '-c'
       - |
-        echo "Ensuring ~/excelr-website/ directory exists on VM..."
-        gcloud compute ssh --zone=${_ZONE} ubuntu@dev-excelr-website-asia-south1 --command="
-          mkdir -p ~/excelr-website/
-          sudo chown ubuntu:ubuntu ~/excelr-website/
+        echo "Ensuring ~/pranay-website/ directory exists on VM..."
+        gcloud compute ssh --zone=${_ZONE} ubuntu@dev-pranay-website-asia-south1 --command="
+          mkdir -p ~/pranay-website/
+          sudo chown ubuntu:ubuntu ~/pranay-website/
         "
 
   # Copy docker-compose.yml to the VM
@@ -128,7 +128,7 @@ steps:
       - '-c'
       - |
         echo "Copying docker-compose.yml to VM..."
-        gcloud compute scp --zone=${_ZONE} ./docker-compose.yml ubuntu@dev-excelr-website-asia-south1:~/excelr-website/
+        gcloud compute scp --zone=${_ZONE} ./docker-compose.yml ubuntu@dev-pranay-website-asia-south1:~/pranay-website/
 
   # SSH into the VM, verify the file existence, and execute docker-compose
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -137,25 +137,25 @@ steps:
       - '-c'
       - |
         echo "Logging into the VM and verifying docker-compose.yml..."
-        gcloud compute ssh --zone=${_ZONE} ubuntu@dev-excelr-website-asia-south1 --command="
+        gcloud compute ssh --zone=${_ZONE} ubuntu@dev-pranay-website-asia-south1 --command="
           echo 'Current Directory:'
           pwd
           echo 'Listing files:'
-          ls ~/excelr-website/
+          ls ~/pranay-website/
           echo 'Starting Docker Compose...'
           docker-compose down
           echo 'Waiting for 10 seconds...'
           sleep 10
           echo 'Listing all Docker containers:'
           docker ps -a
-          cd ~/excelr-website/
-          sudo sed -i '/excelr_admin_webapp:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
-          sudo sed -i '/excelr_student_webapp:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
-          sudo sed -i '/excelr_trainer_webapp:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
-          sudo sed -i '/excelr-admin:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
-          sudo sed -i '/excelr-auth:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
-          sudo sed -i '/excelr-trainer:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
-          sudo sed -i '/excelr-users:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
+          cd ~/pranay-website/
+          sudo sed -i '/pranay_admin_webapp:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
+          sudo sed -i '/pranay_student_webapp:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
+          sudo sed -i '/pranay_trainer_webapp:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
+          sudo sed -i '/pranay-admin:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
+          sudo sed -i '/pranay-auth:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
+          sudo sed -i '/pranay-trainer:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
+          sudo sed -i '/pranay-users:/,/image:/s|image:.*|image: gcr.io/$PROJECT_ID/${_APP_NAME}:$BRANCH_NAME|' docker-compose.yml
           docker-compose up -d
         "
 
@@ -164,7 +164,7 @@ substitutions:
   _REGION: asia-south1
   _ZONE: asia-south1-a
   _ENV: development
-  _APP_NAME: excelr-website-dev 
+  _APP_NAME: pranay-website-dev 
   _SEVERITY: CRITICAL
 
 timeout: "800s"
